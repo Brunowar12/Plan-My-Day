@@ -60,7 +60,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap>Accepted/Default_Create_a_highly_effective_logo_for_your_new_app_Plan_M_2_c9942465-b280-4e47-acd4-e79e7a925d3e_0 2.png</pixmap>
+          <pixmap>Default_Create_a_highly_effective_logo_for_your_new_app_Plan_M_2_c9942465-b280-4e47-acd4-e79e7a925d3e_0 2.png</pixmap>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
