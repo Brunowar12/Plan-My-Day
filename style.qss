@@ -1,0 +1,195 @@
+/*= Style for mainwindow START
+  ==================================================== */
+	#MainWindow {
+		background-color: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.509804, y2:1, stop:0 rgba(113, 59, 187, 255), stop:1 rgba(226, 225, 225, 255));
+;
+	}
+/*= END
+  ==================================================== */
+
+/*= Style for button to change menu style START
+  ==================================================== */
+	#change_btn {
+		padding: 5px;
+		border: none;
+		width: 30px;
+		height: 30px;
+	}
+	#side_line_2 {
+	color: #000;
+	background-color: #000;
+	}
+/*= END
+  ==================================================== */
+
+/*= Style for header widget START
+  ==================================================== */
+	#widget {
+		background-color: qlineargradient(spread:pad, x1:0.52451, y1:1, x2:0.514706, y2:0, stop:0 rgba(204, 203, 200, 255), stop:1 rgba(233, 231, 229, 255));
+
+	}
+/*= END
+  ==================================================== */
+
+/*= Style for menu with icon only START
+  ==================================================== */
+  	/* style for widget */
+	#icon_only_widget {
+		background-color: qlineargradient(spread:pad, x1:0.52451, y1:1, x2:0.514706, y2:0, stop:0 rgba(204, 203, 200, 255), stop:1 rgba(233, 231, 229, 255));;
+		width:50px;
+	}
+
+    /* style for QPushButton and QLabel */
+	#icon_only_widget QPushButton, QLabel {
+		height:50px;
+		border:none;
+		/* border-bottom: 1px solid #b0b0b0; */
+	}
+
+	#icon_only_widget QPushButton:hover {
+		background-color: rgb(139, 98, 186);
+	}
+	#icon_only_widget QPushButton:pressed {
+    background-color: rgb(139, 98, 186);
+}
+#icon_only_widget QPushButton:checked {
+    background-color: rgb(139, 98, 186);
+}
+
+	/* style for logo image */
+	#logo_label_1 {
+		padding: 5px
+	}
+/*= END
+  ==================================================== */
+
+/*= Style for menu with icon and text START
+  ==================================================== */
+	/* style for widget */
+	#full_menu_widget {
+		background-color: qlineargradient(spread:pad, x1:0.52451, y1:1, x2:0.514706, y2:0, stop:0 rgba(204, 203, 200, 255), stop:1 rgba(233, 231, 229, 255));;
+	}
+
+	/* style for QPushButton */
+	#full_menu_widget QPushButton {
+		border:none;
+		border-radius: 3px;
+		text-align: left;
+		padding: 8px 0 8px 15px;
+		color: #000;
+	}
+
+	#full_menu_widget QPushButton:hover {
+		background-color: rgb(139, 98, 186);
+	}
+
+	#full_menu_widget QPushButton:checked {
+		color: #000;
+	}
+
+	/* style for logo image */
+	#logo_label_2 {
+		padding: 5px;
+		color: #fff;
+	}
+
+	/* style for APP title */
+	#logo_label_3 {
+		padding-right: 10px;
+		color: rgb(142, 103, 197);
+		font-weight: bold;
+	}
+/*= END
+  ==================================================== */
+
+/*= Style for search button START
+  ==================================================== */
+	#search_btn {
+		border: none;
+	}
+/*= END
+  ==================================================== */
+
+/*= Style for search input START
+  ==================================================== */
+	#search_input {
+		border: none;
+		padding: 5px 10px;
+		color: #000;
+		background-color: transparent;
+	}
+
+	#search_input:focus {
+		background-color: transparent;
+	    border-color: transparent;
+	}
+
+/*= END
+  ==================================================== */
+
+/*= Style for user information button START
+  ==================================================== */
+	#user_btn {
+    border: none;
+    padding-right: 50px;
+}
+/*= END
+  ==================================================== */
+
+
+/*= Style for listboard
+==================================================== */
+  #QLineEdit {
+    font-size: 15px;
+    border: none; /* Removes border */
+    border-color: none;
+    background-color: transparent; /* Makes background transparent */
+}
+  #frame_3 {
+    height: 60px;
+    border-color: none;
+    background-color: transparent;
+}
+  #listView_2 {
+    background-color: transparent;
+    border: none;
+}
+  #frame_2 {
+    background-color: qlineargradient(spread:pad, x1:0.52451, y1:1, x2:0.514706, y2:0, stop:0 rgba(204, 203, 200, 255), stop:1 rgba(233, 231, 229, 255));
+    border-color: none;
+    border: none;
+}
+  #frame_3 {
+    border: none;
+    background-color: transparent;
+}
+  #frame_4 {
+    border: none;
+    background-color: transparent;
+}
+  #frame_5 {
+    border: none;
+    background-color: transparent;
+}
+
+  #add_btn_task {
+    border: none;
+  }
+
+  #add_task {
+    margin-top: 1px;
+    border: none;
+    background-color: transparent;
+    color: rgb(74, 146, 229);
+  }
+
+  #btn_only_today {
+  color: rgb(35, 17, 80);
+  }
+
+#verticalLayout_2 > *:first-child {
+  margin-top: 110px;
+}
+
+/*= END
+  ==================================================== */
