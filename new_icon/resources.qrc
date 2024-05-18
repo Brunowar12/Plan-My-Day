@@ -1,0 +1,17 @@
+<RCC>
+  <qresource prefix="icon">
+    <file>more.png</file>
+    <file>today.png</file>
+    <file>plus.png</file>
+    <file>logo.png</file>
+    <file>menu.png</file>
+    <file>history.png</file>
+    <file>task.png</file>
+    <file>calendar.png</file>
+    <file>exit.png</file>
+    <file>search.png</file>
+    <file>settings.png</file>
+    <file>star.png</file>
+    <file>user1.png</file>
+  </qresource>
+</RCC>
