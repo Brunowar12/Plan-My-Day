@@ -10,3 +10,7 @@
 - Added page - Selected tasks
 - Added page - Task history
 - Fixed text image errors
+- # Build-1.2.1
+- Added functionality for selected tasks
+- Implementation of history functionality
+
