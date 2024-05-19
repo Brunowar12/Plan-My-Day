@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>950</width>
-    <height>600</height>
+    <height>688</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -668,7 +668,7 @@ margin-top: 0px;</string>
        <item>
         <widget class="QStackedWidget" name="stackedWidget">
          <property name="currentIndex">
-          <number>0</number>
+          <number>6</number>
          </property>
          <widget class="QWidget" name="page">
           <layout class="QGridLayout" name="gridLayout_2">
@@ -983,26 +983,96 @@ background-color: transparent;</string>
          </widget>
          <widget class="QWidget" name="page_2">
           <layout class="QGridLayout" name="gridLayout_3">
+           <item row="2" column="0">
+            <widget class="QFrame" name="frame_fav_foot">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="0">
-            <widget class="QLabel" name="label_5">
-             <property name="font">
-              <font>
-               <pointsize>20</pointsize>
-              </font>
+            <widget class="QFrame" name="frame_fav_head">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
              </property>
-             <property name="text">
-              <string>Favorites Page</string>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+             <layout class="QVBoxLayout" name="verticalLayout_9">
+              <item>
+               <widget class="QLabel" name="label_5">
+                <property name="minimumSize">
+                 <size>
+                  <width>151</width>
+                  <height>41</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>36</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: #fff;</string>
+                </property>
+                <property name="text">
+                 <string>My favorite tasks</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_current_day_2">
+                <property name="minimumSize">
+                 <size>
+                  <width>151</width>
+                  <height>41</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>20</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: #fff;</string>
+                </property>
+                <property name="text">
+                 <string>Monday, April 1</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QFrame" name="frame_fav_main">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
              </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_8">
+              <item>
+               <widget class="QListView" name="list_view_fav"/>
+              </item>
+             </layout>
             </widget>
            </item>
           </layout>
          </widget>
          <widget class="QWidget" name="page_3">
           <layout class="QGridLayout" name="gridLayout_4">
-           <item row="0" column="0">
+           <item row="1" column="0">
             <widget class="QLabel" name="label_6">
              <property name="font">
               <font>
@@ -1010,30 +1080,103 @@ background-color: transparent;</string>
               </font>
              </property>
              <property name="text">
-              <string>Calendar Page</string>
+              <string/>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>
+           <item row="0" column="0">
+            <widget class="QCalendarWidget" name="calendarWidget"/>
+           </item>
           </layout>
          </widget>
          <widget class="QWidget" name="page_4">
           <layout class="QGridLayout" name="gridLayout_5">
+           <item row="1" column="0">
+            <widget class="QFrame" name="frame_hist_main">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_10">
+              <item>
+               <widget class="QListView" name="list_view_history"/>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QFrame" name="frame_hist_foot">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="0">
-            <widget class="QLabel" name="label_7">
-             <property name="font">
-              <font>
-               <pointsize>20</pointsize>
-              </font>
+            <widget class="QFrame" name="frame_hist_head">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
              </property>
-             <property name="text">
-              <string>History Page</string>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_11">
+              <item>
+               <widget class="QLabel" name="label_7">
+                <property name="minimumSize">
+                 <size>
+                  <width>151</width>
+                  <height>41</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>36</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: #fff;</string>
+                </property>
+                <property name="text">
+                 <string>Task history</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label_current_day_3">
+                <property name="minimumSize">
+                 <size>
+                  <width>151</width>
+                  <height>41</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>20</pointsize>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">color: #fff;</string>
+                </property>
+                <property name="text">
+                 <string>Monday, April 1</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </widget>
            </item>
           </layout>
@@ -1079,18 +1222,325 @@ background-color: transparent;</string>
          <widget class="QWidget" name="page_7">
           <layout class="QGridLayout" name="gridLayout_8">
            <item row="0" column="0">
-            <widget class="QLabel" name="label_10">
-             <property name="font">
-              <font>
-               <pointsize>20</pointsize>
-              </font>
+            <widget class="QFrame" name="frame_user_main">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
              </property>
-             <property name="text">
-              <string>User Page</string>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
+             <layout class="QHBoxLayout" name="horizontalLayout_8">
+              <item>
+               <widget class="QFrame" name="frame_user_left">
+                <property name="maximumSize">
+                 <size>
+                  <width>300</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_13">
+                 <property name="spacing">
+                  <number>20</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QFrame" name="frame_user_img">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>250</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true"/>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QGridLayout" name="gridLayout_9">
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="spacing">
+                     <number>0</number>
+                    </property>
+                    <item row="0" column="0">
+                     <widget class="QLabel" name="label">
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="pixmap">
+                       <pixmap>static/icons/user-icon.png</pixmap>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignCenter</set>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="button_edit_user">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true"/>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset>
+                     <normaloff>static/icons/edit_icon.png</normaloff>static/icons/edit_icon.png</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>40</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <spacer name="user_vertical_spacer">
+                   <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>20</width>
+                     <height>10</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QFrame" name="frame_user_right">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_10">
+                 <property name="leftMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>250</number>
+                 </property>
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <item row="1" column="1">
+                  <widget class="QLabel" name="label_output_age">
+                   <property name="font">
+                    <font>
+                     <pointsize>15</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Unknown</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="QLabel" name="label_output_work">
+                   <property name="font">
+                    <font>
+                     <pointsize>15</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Unknown</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QLabel" name="label_output_address">
+                   <property name="font">
+                    <font>
+                     <pointsize>15</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Unknown</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QLabel" name="label_address">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>15</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Address:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="1">
+                  <widget class="QLabel" name="label_output_about">
+                   <property name="font">
+                    <font>
+                     <pointsize>15</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Unknown</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0">
+                  <widget class="QLabel" name="label_about">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>15</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>About Me:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="0">
+                  <widget class="QLabel" name="label_user_title">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>20</pointsize>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Offline mode</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QLabel" name="label_age">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>15</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Age:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="0">
+                  <widget class="QLabel" name="label_work">
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>30</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <pointsize>15</pointsize>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>Place of work:</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QFrame" name="frame_user_foot">
+             <property name="frameShape">
+              <enum>QFrame::StyledPanel</enum>
              </property>
+             <property name="frameShadow">
+              <enum>QFrame::Raised</enum>
+             </property>
+             <layout class="QHBoxLayout" name="horizontalLayout_9"/>
             </widget>
            </item>
           </layout>

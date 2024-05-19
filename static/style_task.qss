@@ -1,0 +1,57 @@
+
+/* Styling for unchecked checkboxes */
+QCheckBox {
+    color: #000000; /* Set text color to black for visibility */
+    font-size: 15px; /* Set the font size for readability */
+}
+
+/* Styling for checked checkboxes */
+QCheckBox:checked {
+    text-decoration: line-through; /* Cross out text to indicate completion */
+    color: #808080; /* Change text color to grey to differentiate from unchecked */
+}
+
+/* Base styling for checkbox indicators */
+QCheckBox::indicator {
+    width: 30px; /* Set width of the checkbox indicator */
+    height: 30px; /* Set height of the checkbox indicator */
+}
+
+/* Styling for checked state indicator of the first checkbox */
+QCheckBox#checkBox_3::indicator:checked {
+    image: url("./static/icons/check_on.png"); /* Use custom checked icon */
+}
+
+/* Styling for unchecked state indicator of the first checkbox */
+QCheckBox#checkBox_3::indicator:unchecked {
+    image: url("./static/icons/check_off.png"); /* Use custom unchecked icon */
+}
+
+/* Styling for checked state indicator of the second checkbox */
+QCheckBox#check_favorite::indicator:checked {
+    image: url("./static/icons/star_on.png"); /* Use custom checked icon */
+}
+
+/* Styling for unchecked state indicator of the second checkbox */
+QCheckBox#check_favorite::indicator:unchecked {
+    image: url("./static/icons/star_off.png"); /* Use custom unchecked icon */
+    width: 38px; /* Set width of the checkbox indicator */
+    height: 38px;
+}
+
+
+
+
+/* Base styling for buttons */
+QPushButton {
+    border: none; /* Remove border for a flat design */
+    border-radius: 15px; /* Round corners for consistency with QWidget */
+    max-width: 40px; /* Limit button width for a uniform look */
+    max-height: 40px; /* Limit button height for a uniform look */
+    /* Note: 'icon' property should be set programmatically in PyQt */
+}
+
+/* Hover styling for buttons */
+QPushButton:hover {
+    background-image: url("./static/icons/close_on.png");
+}
