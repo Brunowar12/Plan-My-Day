@@ -1,1 +1,1 @@
-# Plan-My-Day
+PLAN MY DAY - BETA
