@@ -2,9 +2,8 @@ import json
 import os
 import sys
 
-
-from PyQt6.QtCore import QTimer, Qt, QSize, QFile, QTextStream, QIODevice,pyqtSignal, QEvent, QDateTime
-from PyQt6.QtGui import QColor,QStandardItemModel, QStandardItem, QIcon
+from PyQt6.QtCore import QTimer, Qt, QSize, QFile, QTextStream, QIODevice, pyqtSignal, QEvent, QDateTime
+from PyQt6.QtGui import QColor, QStandardItemModel, QStandardItem, QIcon
 from PyQt6.QtWidgets import QApplication, QMainWindow, QGraphicsDropShadowEffect, QMessageBox, QLineEdit, QPushButton, QWidget
 from PyQt6 import uic
 from ui_splash_screen import Ui_SplashScreen
@@ -15,67 +14,64 @@ from sidebar_ui import Ui_MainWindow as Ui_SidebarWindow
 counter = 0
 
 class TaskItem(QWidget):
-    # Signal to indicate when the task's close button is clicked
     closeClicked = pyqtSignal(int)
+    favoriteToggled = pyqtSignal(int, bool)
 
-    # CSS styles for checked and unchecked tasks
     checked_style = "text-decoration: line-through;"
     unchecked_style = "text-decoration: none;"
 
-    def __init__(self, text, state, position, created_date, *args, **kwargs):
+    def __init__(self, text, state, position, created_date, is_favorite, *args, **kwargs):
         super().__init__()
-        self.position = position  # Position of the task in the list, used for deletion
+        self.position = position
 
-        # Load the task item UI and apply task-specific styles
         self.ui = uic.loadUi("./task.ui", self)
         with open("./static/style_task.qss", "r") as f:
             style_str = f.read()
             self.setStyleSheet(style_str)
 
-        # Initialize the task checkbox with provided text and completion state
         self.task = self.ui.checkBox_3
         self.task.setText(text)
         self.task.setChecked(state)
         if state:
             self.task.setStyleSheet(self.checked_style)
 
-        # Connect the checkbox state change to the style update method
+        self.favorite_checkbox = self.ui.check_favorite
+        self.favorite_checkbox.setChecked(is_favorite)
+        self.favorite_checkbox.stateChanged.connect(self.update_favorite)
+
         self.task.stateChanged.connect(self.update_style)
 
-        # Initialize and configure the close button
         self.close_btn = self.ui.pushButton_4
-        self.close_btn.setText("")  # Removing default text
+        self.close_btn.setText("")
         self.close_btn.setIcon(QIcon("./static/icons/close_off.png"))
-
-        # Connect the close button hover event to JavaScript function
         self.close_btn.installEventFilter(self)
 
         self.close_btn.clicked.connect(self.emitCloseSignal)
 
-        # Set the created date label text
         self.ui.label_day.setText(created_date)
 
     def eventFilter(self, obj, event):
         if obj == self.close_btn and event.type() == QEvent.Type.Enter:
-            # При наведении курсора на кнопку меняем иконку
             self.close_btn.setIcon(QIcon("./static/icons/close_on.png"))
         elif obj == self.close_btn and event.type() == QEvent.Type.Leave:
-            # При уходе курсора с кнопки возвращаем исходную иконку
             self.close_btn.setIcon(QIcon("./static/icons/close_off.png"))
         return super().eventFilter(obj, event)
 
-    # Update the task's visual style based on its completion state
     def update_style(self, state):
         self.task.setStyleSheet(self.checked_style if state else self.unchecked_style)
 
-    # Retrieve the current state and text of the task
+    def update_favorite(self, state):
+        self.favoriteToggled.emit(self.position, bool(state))
+
     def get_checkbox_state(self):
         return self.task.isChecked()
 
     def get_checkbox_text(self):
         return self.task.text()
 
-    # Emit a signal indicating the task should be closed, passing its position
+    def get_favorite_state(self):
+        return self.favorite_checkbox.isChecked()
+
     def emitCloseSignal(self):
         self.closeClicked.emit(self.position)
 
@@ -204,65 +200,108 @@ class MainWindow(QMainWindow):
 
         # Assign UI elements to variables for easier access
         self.list_view = self.ui.listView_2
+        self.list_view_fav = self.ui.list_view_fav
+        self.list_view_history = self.ui.list_view_history  # listView for history
         self.add_btn = self.ui.add_btn_task
         self.task_input = self.ui.add_task
 
         self.list_model = QStandardItemModel()  # Model for the task list
+        self.fav_model = QStandardItemModel()  # Model for the favorite task list
+        self.history_model = QStandardItemModel()  # Model for the history task list
         self.init_ui()  # Initialize UI components
 
         self.task_file_path = os.path.join(os.getcwd(), "static/tasks.json")  # Task storage file
+        self.history_file_path = os.path.join(os.getcwd(), "static/history.json")  # History storage file
+
         self.task_list = self.get_tasks()  # Load tasks from storage
+        self.history_list = self.get_history()  # Load history from storage
+
         self.show_tasks(self.task_list)  # Display tasks in the UI
+        self.show_history(self.history_list)  # Display history in the UI
 
-        # Update the current date label
-        self.update_current_date()
-
-    # Initialize UI components and connect signals
     def init_ui(self):
         self.list_view.setModel(self.list_model)
         self.list_view.setSpacing(5)
-
+        self.list_view_fav.setModel(self.fav_model)
+        self.list_view_fav.setSpacing(5)
+        self.list_view_history.setModel(self.history_model)
+        self.list_view_history.setSpacing(5)
 
         self.add_btn.clicked.connect(self.add_new_task)
 
-    # Remove a task item from the list
     def remove_item(self, position):
+        removed_task = self.task_list.pop(position)
+        self.add_to_history(removed_task)
         self.list_model.removeRow(position)
-        self.task_list.pop(position)
         self.get_all_tasks()  # Refresh the task list from the UI
         self.show_tasks(self.task_list)
 
-    # Load tasks from the JSON storage file
     def get_tasks(self):
+        if not os.path.exists(self.task_file_path):
+            with open(self.task_file_path, "w") as f:
+                f.write(json.dumps({"tasks": []}))
         with open(self.task_file_path, "r") as f:
             tasks = json.load(f)
             return tasks["tasks"]
 
-    # Display tasks in the list view using custom widgets
+    def get_history(self):
+        if not os.path.exists(self.history_file_path):
+            with open(self.history_file_path, "w") as f:
+                f.write(json.dumps({"tasks": []}))
+        with open(self.history_file_path, "r") as f:
+            history = json.load(f)
+            return history["tasks"]
+
+    def add_to_history(self, task):
+        self.history_list.append(task)
+        with open(self.history_file_path, "w") as f:
+            f.write(json.dumps({"tasks": self.history_list}))
+        self.show_history(self.history_list)
+
+    def show_history(self, history_list):
+        self.history_model.clear()
+        for i, task in enumerate(history_list):
+            item = QStandardItem()
+            self.history_model.appendRow(item)
+            widget = TaskItem(task[0], task[1], i, task[2], task[3])
+            item.setSizeHint(widget.sizeHint())
+            self.list_view_history.setIndexWidget(self.history_model.indexFromItem(item), widget)
+
     def show_tasks(self, task_list):
         self.list_model.clear()
+        self.fav_model.clear()
         for i, task in enumerate(task_list):
             item = QStandardItem()
             self.list_model.appendRow(item)
-            widget = TaskItem(task[0], task[1], i, task[2])
+            widget = TaskItem(task[0], task[1], i, task[2], task[3])
             widget.closeClicked.connect(self.remove_item)
+            widget.favoriteToggled.connect(self.update_favorites)
             item.setSizeHint(widget.sizeHint())
             self.list_view.setIndexWidget(self.list_model.indexFromItem(item), widget)
+            if task[3]:
+                fav_item = QStandardItem()
+                self.fav_model.appendRow(fav_item)
+                fav_widget = TaskItem(task[0], task[1], i, task[2], task[3])
+                fav_widget.closeClicked.connect(self.remove_item)
+                fav_widget.favoriteToggled.connect(self.update_favorites)
+                fav_item.setSizeHint(fav_widget.sizeHint())
+                self.list_view_fav.setIndexWidget(self.fav_model.indexFromItem(fav_item), fav_widget)
 
-    # Add a new task based on user input
+    def update_favorites(self, position, is_favorite):
+        self.task_list[position][3] = is_favorite
+        self.show_tasks(self.task_list)
+
     def add_new_task(self):
         new_task = self.task_input.text().strip()
         if new_task:
-            # Get the current date and format it as required
             import datetime
             today = datetime.date.today()
             created_date = today.strftime("%d %B")
 
-            self.task_list.append([new_task, False, created_date])
+            self.task_list.append([new_task, False, created_date, False])
             self.show_tasks(self.task_list)
             self.task_input.clear()
 
-    # Update the task list based on the current UI state
     def get_all_tasks(self):
         self.task_list = []
         for row in range(self.list_model.rowCount()):
@@ -270,91 +309,94 @@ class MainWindow(QMainWindow):
             widget = self.list_view.indexWidget(item.index())
             if isinstance(widget, TaskItem):
                 self.task_list.append(
-                    [widget.get_checkbox_text(), widget.get_checkbox_state(), widget.ui.label_day.text()])
+                    [widget.get_checkbox_text(), widget.get_checkbox_state(), widget.ui.label_day.text(), widget.get_favorite_state()])
 
-    # Save the current tasks to a JSON file when the application is closed.
     def closeEvent(self, event):
         self.get_all_tasks()
         with open(self.task_file_path, "w") as f:
             f.write(json.dumps({"tasks": self.task_list}))
 
-    ## Search function
     def on_search_btn_clicked(self):
-        self.ui.stackedWidget.setCurrentIndex(5)
-        search_text = self.ui.search_input.text().strip()
-        if search_text:
-            self.ui.label_9.setText(search_text)
+        # Handle the search button click event
+        pass
 
-    ## Function to change page to user page
     def on_user_btn_clicked(self):
-        self.ui.stackedWidget.setCurrentIndex(6)
+        # Handle the user button click event
+        pass
 
-    ## Change the status of QPushButton Checkable when the stackedWidget index changes
     def on_stackedWidget_currentChanged(self, index):
-        btn_list = self.ui.icon_only_widget.findChildren(QPushButton) \
-                   + self.ui.full_menu_widget.findChildren(QPushButton)
+        # Handle the stacked widget current changed event
+        pass
 
-        for btn in btn_list:
-            if index in [5, 6]:
-                btn.setAutoExclusive(False)
-                btn.setChecked(False)
-            else:
-                btn.setAutoExclusive(True)
+    def on_home_btn_1_toggled(self, checked):
+        if checked:
+            self.ui.stackedWidget.setCurrentIndex(0)
+            self.ui.home_btn_2.setChecked(True)
 
-    ## functions to change the menu page
-    def on_home_btn_1_toggled(self):
-        self.ui.stackedWidget.setCurrentIndex(0)
+    def on_home_btn_2_toggled(self, checked):
+        if checked:
+            self.ui.stackedWidget.setCurrentIndex(0)
+            self.ui.home_btn_1.setChecked(True)
 
-    def on_home_btn_2_toggled(self):
-        self.ui.stackedWidget.setCurrentIndex(0)
+    def on_favorites_btn_1_toggled(self, checked):
+        if checked:
+            self.ui.stackedWidget.setCurrentIndex(1)
+            self.ui.favorites_btn_2.setChecked(True)
 
-    def on_favorites_btn_1_toggled(self):
-        self.ui.stackedWidget.setCurrentIndex(1)
+    def on_favorites_btn_2_toggled(self, checked):
+        if checked:
+            self.ui.stackedWidget.setCurrentIndex(1)
+            self.ui.favorites_btn_1.setChecked(True)
 
-    def on_favorites_btn_2_toggled(self):
-        self.ui.stackedWidget.setCurrentIndex(1)
+    def on_calendar_btn_1_toggled(self, checked):
+        if checked:
+            self.ui.stackedWidget.setCurrentIndex(2)
+            self.ui.calendar_btn_2.setChecked(True)
 
-    def on_calendar_btn_1_toggled(self):
-        self.ui.stackedWidget.setCurrentIndex(2)
+    def on_calendar_btn_2_toggled(self, checked):
+        if checked:
+            self.ui.stackedWidget.setCurrentIndex(2)
+            self.ui.calendar_btn_1.setChecked(True)
 
-    def on_calendar_btn_2_toggled(self):
-        self.ui.stackedWidget.setCurrentIndex(2)
+    def on_history_btn_1_toggled(self, checked):
+        if checked:
+            self.ui.stackedWidget.setCurrentIndex(3)
+            self.ui.history_btn_2.setChecked(True)
 
-    def on_history_btn_1_toggled(self):
-        self.ui.stackedWidget.setCurrentIndex(3)
+    def on_history_btn_2_toggled(self, checked):
+        if checked:
+            self.ui.stackedWidget.setCurrentIndex(3)
+            self.ui.history_btn_1.setChecked(True)
 
-    def on_history_btn_2_toggled(self):
-        self.ui.stackedWidget.setCurrentIndex(3)
+    def on_options_btn_1_toggled(self, checked):
+        if checked:
+            self.ui.stackedWidget.setCurrentIndex(4)
+            self.ui.options_btn_2.setChecked(True)
 
-    def on_options_btn_1_toggled(self):
-        self.ui.stackedWidget.setCurrentIndex(4)
+    def on_options_btn_2_toggled(self, checked):
+        if checked:
+            self.ui.stackedWidget.setCurrentIndex(4)
+            self.ui.options_btn_1.setChecked(True)
 
-    def on_options_btn_2_toggled(self):
-        self.ui.stackedWidget.setCurrentIndex(4)
-
-    ## Function to display only today's tasks
     def on_only_today_btn_clicked(self):
-        today_tasks = [task for task in self.task_list if task[2] == QDateTime.currentDateTime().toString("dd MMMM")]
-        self.show_tasks(today_tasks)
+        # Handle the "Only Today" button click event
+        pass
 
-    ## Function to update the current date
     def update_current_date(self):
-        current_date_time = QDateTime.currentDateTime()
-        formatted_date_time = current_date_time.toString("dddd, MMMM d")
-        self.ui.label_current_day.setText(formatted_date_time)
-        self.ui.label_current_day_2.setText(formatted_date_time)
-        self.ui.label_current_day_3.setText(formatted_date_time)
+        current_date = QDateTime.currentDateTime().toString("dddd, MMMM d, yyyy")
+        self.ui.label_current_date.setText(current_date)
 
-# SPLASH SCREEN
 class SplashScreen(QMainWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_SplashScreen()
         self.ui.setupUi(self)
 
-        self.setWindowFlag(Qt.WindowType.FramelessWindowHint)
+        ## REMOVE TITLE BAR
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground)
 
+        ## DROP SHADOW EFFECT
         self.shadow = QGraphicsDropShadowEffect(self)
         self.shadow.setBlurRadius(20)
         self.shadow.setXOffset(0)
@@ -362,39 +404,40 @@ class SplashScreen(QMainWindow):
         self.shadow.setColor(QColor(0, 0, 0, 60))
         self.ui.dropShadowFrame.setGraphicsEffect(self.shadow)
 
+        ## QTIMER ==> START
         self.timer = QTimer()
         self.timer.timeout.connect(self.progress)
-        self.timer.start(35)
+        self.timer.start(10)
 
-        self.ui.label_description.setText("<strong>WELCOME</strong> TO PLAN MY DAY")
+        ## SHOW ==> MAIN WINDOW
+        self.auth = AuthWindow()
+
+        ## INITIAL TEXT
+        self.ui.label_description.setText("<strong>WELCOME</strong> TO MY APPLICATION")
+
+        ## CHANGE DESCRIPTION TEXT
         QTimer.singleShot(1500, lambda: self.ui.label_description.setText("<strong>LOADING</strong> DATABASE"))
         QTimer.singleShot(3000, lambda: self.ui.label_description.setText("<strong>LOADING</strong> USER INTERFACE"))
 
-        self.show()
+        ## SHOW ==> MAIN WINDOW
+        QTimer.singleShot(4500, self.show_main_window)
+
+    def show_main_window(self):
+        self.auth.show()
+        self.close()
 
     def progress(self):
         global counter
-
         self.ui.progressBar.setValue(counter)
-
+        counter += 1
         if counter > 100:
             self.timer.stop()
-            self.auth_window = AuthWindow()
-            self.auth_window.show()
-            self.close()
-
-        counter += 1
 
 if __name__ == "__main__":
     import new_icon.resources
     app = QApplication(sys.argv)
-
-    style_file = QFile("./static/style.qss")
-    if style_file.open(QIODevice.OpenModeFlag.ReadOnly | QIODevice.OpenModeFlag.Text):
-        style_stream = QTextStream(style_file)
-        app.setStyleSheet(style_stream.readAll())
-    else:
-        print("Could not open style.qss")
-
-    splash = SplashScreen()
+    with open("./static/style.qss", "r") as f:
+        app.setStyleSheet(f.read())
+    window = SplashScreen()
+    window.show()
     sys.exit(app.exec())
