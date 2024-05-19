@@ -15,7 +15,7 @@ class Ui_Form(object):
         Form.resize(938, 141)
         Form.setStyleSheet("")
         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
-        self.verticalLayout.setContentsMargins(30, 0, 30, 30)
+        self.verticalLayout.setContentsMargins(0, 0, 30, 30)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.widget_3 = QtWidgets.QWidget(parent=Form)

@@ -342,6 +342,8 @@ class MainWindow(QMainWindow):
         current_date_time = QDateTime.currentDateTime()
         formatted_date_time = current_date_time.toString("dddd, MMMM d")
         self.ui.label_current_day.setText(formatted_date_time)
+        self.ui.label_current_day_2.setText(formatted_date_time)
+        self.ui.label_current_day_3.setText(formatted_date_time)
 
 # SPLASH SCREEN
 class SplashScreen(QMainWindow):
