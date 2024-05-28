@@ -52,6 +52,7 @@ class MainWindow(QMainWindow):
 
         self.show_tasks(self.task_list)  # Display tasks in the UI
         self.show_history(self.history_list)  # Display history in the UI
+        self.update_current_date()
 
     def init_ui(self):
         self.list_view.setModel(self.list_model)
@@ -66,8 +67,6 @@ class MainWindow(QMainWindow):
     def remove_item(self, position):
         removed_task = self.task_list.pop(position)
         self.add_to_history(removed_task)
-        self.list_model.removeRow(position)
-        self.get_all_tasks()  # Refresh the task list from the UI
         self.show_tasks(self.task_list)
 
     def get_tasks(self):
@@ -114,6 +113,7 @@ class MainWindow(QMainWindow):
             widget = TaskItem(task[0], task[1], i, task[2], task[3])
             widget.closeClicked.connect(self.remove_item)
             widget.favoriteToggled.connect(self.update_favorites)
+            widget.checkboxToggled.connect(self.update_task_status)  # Correctly connect the checkboxToggled signal
             item.setSizeHint(widget.sizeHint())
             self.list_view.setIndexWidget(self.list_model.indexFromItem(item), widget)
             if task[3]:
@@ -122,11 +122,17 @@ class MainWindow(QMainWindow):
                 fav_widget = TaskItem(task[0], task[1], i, task[2], task[3])
                 fav_widget.closeClicked.connect(self.remove_item)
                 fav_widget.favoriteToggled.connect(self.update_favorites)
+                fav_widget.checkboxToggled.connect(
+                    self.update_task_status)  # Correctly connect the checkboxToggled signal
                 fav_item.setSizeHint(fav_widget.sizeHint())
                 self.list_view_fav.setIndexWidget(self.fav_model.indexFromItem(fav_item), fav_widget)
 
     def update_favorites(self, position, is_favorite):
         self.task_list[position][3] = is_favorite
+        self.show_tasks(self.task_list)
+        
+    def update_task_status(self, position, is_checked):
+        self.task_list[position][1] = is_checked
         self.show_tasks(self.task_list)
 
     def add_new_task(self):
@@ -217,9 +223,14 @@ class MainWindow(QMainWindow):
             self.ui.options_btn_1.setChecked(True)
 
     def on_only_today_btn_clicked(self):
-        # Handle the "Only Today" button click event
-        pass
+        print("Only today button clicked!")
 
     def update_current_date(self):
-        current_date = QDateTime.currentDateTime().toString("dddd, MMMM d, yyyy")
-        self.ui.label_current_date.setText(current_date)
+        today = datetime.date.today()
+        formatted_date = today.strftime("%A, %B %d")
+        self.ui.label_current_day.setText(formatted_date)
+        self.ui.label_current_day_2.setText(formatted_date)
+        self.ui.label_current_day_3.setText(formatted_date)
+
+    def set_text_color_red(self):
+        self.ui.label_current_date.setStyleSheet("color: red;")

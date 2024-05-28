@@ -3,6 +3,7 @@ from imports import *
 class TaskItem(QWidget):
     closeClicked = pyqtSignal(int)
     favoriteToggled = pyqtSignal(int, bool)
+    checkboxToggled = pyqtSignal(int, bool)  # Add this line to define the checkboxToggled signal
 
     checked_style = "text-decoration: line-through;"
     unchecked_style = "text-decoration: none;"
@@ -27,6 +28,7 @@ class TaskItem(QWidget):
         self.favorite_checkbox.stateChanged.connect(self.update_favorite)
 
         self.task.stateChanged.connect(self.update_style)
+        self.task.stateChanged.connect(self.emitCheckboxToggled)  # Connect the stateChanged signal to emitCheckboxToggled
 
         self.close_btn = self.ui.pushButton_4
         self.close_btn.setText("")
@@ -61,3 +63,6 @@ class TaskItem(QWidget):
 
     def emitCloseSignal(self):
         self.closeClicked.emit(self.position)
+    
+    def emitCheckboxToggled(self, state):
+        self.checkboxToggled.emit(self.position, bool(state))
