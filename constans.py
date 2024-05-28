@@ -1,0 +1,2 @@
+## ==> GLOBALS
+counter = 0

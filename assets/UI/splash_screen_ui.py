@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'd:\GitHubRepos\Plan-My-Day\splash_screen.ui'
+# Form implementation generated from reading ui file 'd:\GitHubRepos\Plan-My-Day\assets\UI\splash_screen.ui'
 #
 # Created by: PyQt6 UI code generator 6.7.0
 #
@@ -7,7 +7,6 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-
 
 class Ui_SplashScreen(object):
     def setupUi(self, SplashScreen):

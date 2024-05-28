@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'd:\GitHubRepos\Plan-My-Day\auth.ui'
+# Form implementation generated from reading ui file 'd:\GitHubRepos\Plan-My-Day\assets\UI\auth.ui'
 #
 # Created by: PyQt6 UI code generator 6.7.0
 #
@@ -7,7 +7,6 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
