@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'd:\GitHubRepos\Plan-My-Day\sidebar.ui'
+# Form implementation generated from reading ui file 'd:\GitHubRepos\Plan-My-Day\assets\UI\sidebar.ui'
 #
 # Created by: PyQt6 UI code generator 6.7.0
 #
@@ -7,7 +7,6 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -549,7 +548,7 @@ class Ui_MainWindow(object):
         self.gridLayout_9.setObjectName("gridLayout_9")
         self.label = QtWidgets.QLabel(parent=self.frame_user_img)
         self.label.setText("")
-        self.label.setPixmap(QtGui.QPixmap("d:\\GitHubRepos\\Plan-My-Day\\static/icons/user-icon.png"))
+        self.label.setPixmap(QtGui.QPixmap("d:\\GitHubRepos\\Plan-My-Day\\assets\\UI\\static/icons/user-icon.png"))
         self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label.setObjectName("label")
         self.gridLayout_9.addWidget(self.label, 0, 0, 1, 1)
@@ -559,7 +558,7 @@ class Ui_MainWindow(object):
         self.button_edit_user.setStyleSheet("")
         self.button_edit_user.setText("")
         icon12 = QtGui.QIcon()
-        icon12.addPixmap(QtGui.QPixmap("d:\\GitHubRepos\\Plan-My-Day\\static/icons/edit_icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon12.addPixmap(QtGui.QPixmap("d:\\GitHubRepos\\Plan-My-Day\\assets\\UI\\static/icons/edit_icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.button_edit_user.setIcon(icon12)
         self.button_edit_user.setIconSize(QtCore.QSize(40, 40))
         self.button_edit_user.setObjectName("button_edit_user")

@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'd:\GitHubRepos\Plan-My-Day\task.ui'
+# Form implementation generated from reading ui file 'd:\GitHubRepos\Plan-My-Day\assets\UI\task.ui'
 #
 # Created by: PyQt6 UI code generator 6.7.0
 #
@@ -43,7 +43,7 @@ class Ui_Form(object):
         self.pushButton_4.setStyleSheet("")
         self.pushButton_4.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("d:\\GitHubRepos\\Plan-My-Day\\../static/icons/delete.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        icon.addPixmap(QtGui.QPixmap("d:\\GitHubRepos\\Plan-My-Day\\assets\\UI\\../static/icons/delete.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.pushButton_4.setIcon(icon)
         self.pushButton_4.setIconSize(QtCore.QSize(30, 30))
         self.pushButton_4.setObjectName("pushButton_4")

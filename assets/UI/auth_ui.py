@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'd:\GitHubRepos\Plan-My-Day\auth.ui'
+# Form implementation generated from reading ui file 'd:\GitHubRepos\Plan-My-Day\assets\UI\auth.ui'
 #
 # Created by: PyQt6 UI code generator 6.7.0
 #
@@ -80,7 +80,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.setObjectName("verticalLayout_6")
         self.auth = QtWidgets.QFrame(parent=self.frame_auth)
         self.auth.setMinimumSize(QtCore.QSize(300, 400))
-        self.auth.setMaximumSize(QtCore.QSize(16777215, 400))
+        self.auth.setMaximumSize(QtCore.QSize(300, 400))
         self.auth.setStyleSheet("\n"
 "background-color: qlineargradient(spread:pad, x1:0.495098, y1:0, x2:0.514706, y2:1, stop:0 rgba(130, 66, 151, 255), stop:1 rgba(64, 27, 91, 255));\n"
 "border-radius: 30px;\n"
@@ -96,7 +96,8 @@ class Ui_MainWindow(object):
         self.label_auth_title = QtWidgets.QLabel(parent=self.auth)
         self.label_auth_title.setMaximumSize(QtCore.QSize(16777215, 50))
         font = QtGui.QFont()
-        font.setPointSize(32)
+        font.setFamily("Arial")
+        font.setPointSize(28)
         font.setBold(True)
         self.label_auth_title.setFont(font)
         self.label_auth_title.setStyleSheet("QLabel {\n"
@@ -109,7 +110,7 @@ class Ui_MainWindow(object):
         self.label_auth_title.setObjectName("label_auth_title")
         self.verticalLayout_7.addWidget(self.label_auth_title)
         self.label_auth_subtitle = QtWidgets.QLabel(parent=self.auth)
-        self.label_auth_subtitle.setMaximumSize(QtCore.QSize(16777215, 20))
+        self.label_auth_subtitle.setMaximumSize(QtCore.QSize(300, 20))
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(True)
@@ -124,7 +125,7 @@ class Ui_MainWindow(object):
         self.label_auth_subtitle.setObjectName("label_auth_subtitle")
         self.verticalLayout_7.addWidget(self.label_auth_subtitle)
         self.auth_login = QtWidgets.QLabel(parent=self.auth)
-        self.auth_login.setMaximumSize(QtCore.QSize(16777215, 40))
+        self.auth_login.setMaximumSize(QtCore.QSize(300, 40))
         font = QtGui.QFont()
         font.setPointSize(20)
         font.setItalic(True)
@@ -139,7 +140,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_7.addWidget(self.auth_login)
         self.auth_login_button = QtWidgets.QPushButton(parent=self.auth)
         self.auth_login_button.setMinimumSize(QtCore.QSize(0, 40))
-        self.auth_login_button.setMaximumSize(QtCore.QSize(16777215, 40))
+        self.auth_login_button.setMaximumSize(QtCore.QSize(300, 40))
         font = QtGui.QFont()
         font.setPointSize(16)
         font.setBold(True)
@@ -157,7 +158,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.auth_change_button.sizePolicy().hasHeightForWidth())
         self.auth_change_button.setSizePolicy(sizePolicy)
         self.auth_change_button.setMinimumSize(QtCore.QSize(0, 40))
-        self.auth_change_button.setMaximumSize(QtCore.QSize(16777215, 40))
+        self.auth_change_button.setMaximumSize(QtCore.QSize(300, 40))
         font = QtGui.QFont()
         font.setPointSize(14)
         font.setBold(True)
