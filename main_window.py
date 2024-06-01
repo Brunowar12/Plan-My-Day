@@ -2,6 +2,29 @@ from imports import *
 from assets.UI.sidebar_ui import Ui_MainWindow as Ui_SidebarWindow
 from task_item import TaskItem
 
+
+# POPUP WINDOW CLASS
+class DateTimePopup(QtWidgets.QDialog):
+    def __init__(self):
+        super().__init__()
+        uic.loadUi('./assets/UI/date_time_popup.ui', self)
+        self.setStyleSheet(open("./static/style.qss").read())
+
+        # Set today's date and time as default
+        current_date_time = QDateTime.currentDateTime()
+        self.dateTimeEdit.setDateTime(current_date_time)
+
+        self.okButton.clicked.connect(self.accept)
+        self.dateTimeEdit.dateTimeChanged.connect(self.update_selected_date_time)
+
+    def update_selected_date_time(self):
+        selected_date_time = self.dateTimeEdit.dateTime()
+        self.labelSelectedDateTime.setText(f"Selected date and time: {selected_date_time.toString('dd.MM.yyyy HH:mm')}")
+
+    def get_selected_date_time(self):
+        return self.dateTimeEdit.dateTime()
+
+
 # MAIN APPLICATION WINDOW
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -9,6 +32,8 @@ class MainWindow(QMainWindow):
 
         self.ui = Ui_SidebarWindow()
         self.ui.setupUi(self)
+
+        self.settings = QSettings("YourCompanyName", "YourAppName")
 
         self.ui.icon_only_widget.hide()
         self.ui.stackedWidget.setCurrentIndex(0)
@@ -29,6 +54,13 @@ class MainWindow(QMainWindow):
         self.ui.options_btn_1.toggled.connect(self.on_options_btn_1_toggled)
         self.ui.options_btn_2.toggled.connect(self.on_options_btn_2_toggled)
 
+        # Dark Theme
+        self.ui.checkBox_theme.stateChanged.connect(self.toggle_dark_mode)
+
+        dark_mode_enabled = self.settings.value("darkModeEnabled", False, type=bool)
+        self.ui.checkBox_theme.setChecked(dark_mode_enabled)
+        self.apply_dark_mode(dark_mode_enabled)
+
         # Connect the Only Today button signal to the slot
         self.ui.btn_only_today.clicked.connect(self.on_only_today_btn_clicked)
 
@@ -38,6 +70,7 @@ class MainWindow(QMainWindow):
         self.list_view_history = self.ui.list_view_history  # listView for history
         self.add_btn = self.ui.add_btn_task
         self.task_input = self.ui.add_task
+        self.add_btn_time = self.ui.add_btn_time  # Button to open the popup
 
         self.list_model = QStandardItemModel()  # Model for the task list
         self.fav_model = QStandardItemModel()  # Model for the favorite task list
@@ -53,6 +86,27 @@ class MainWindow(QMainWindow):
         self.show_tasks(self.task_list)  # Display tasks in the UI
         self.show_history(self.history_list)  # Display history in the UI
         self.update_current_date()
+
+        # Connect the popup button signal to the slot
+        self.add_btn_time.clicked.connect(self.show_date_time_popup)
+
+        self.selected_end_date_time = None  # Store the selected end date and time
+
+    def toggle_dark_mode(self, state):
+        self.settings.setValue("darkModeEnabled", bool(state))
+        self.apply_dark_mode(bool(state))
+
+    def apply_dark_mode(self, enable):
+        if enable:
+            dark_theme = QFile("./static/dark_theme.qss")
+            if dark_theme.open(QFile.OpenModeFlag.ReadOnly | QFile.OpenModeFlag.Text):
+                stream = QTextStream(dark_theme)
+                self.setStyleSheet(stream.readAll())
+                dark_theme.close()
+            else:
+                print("Не удалось открыть файл темы.")
+        else:
+            self.setStyleSheet(open("./static/style.qss").read())
 
     def init_ui(self):
         self.list_view.setModel(self.list_model)
@@ -100,7 +154,7 @@ class MainWindow(QMainWindow):
         for i, task in enumerate(history_list):
             item = QStandardItem()
             self.history_model.appendRow(item)
-            widget = TaskItem(task[0], task[1], i, task[2], task[3])
+            widget = TaskItem(task[0], task[1], i, task[2], task[3], task[4])
             item.setSizeHint(widget.sizeHint())
             self.list_view_history.setIndexWidget(self.history_model.indexFromItem(item), widget)
 
@@ -110,7 +164,7 @@ class MainWindow(QMainWindow):
         for i, task in enumerate(task_list):
             item = QStandardItem()
             self.list_model.appendRow(item)
-            widget = TaskItem(task[0], task[1], i, task[2], task[3])
+            widget = TaskItem(task[0], task[1], i, task[2], task[3], task[4])
             widget.closeClicked.connect(self.remove_item)
             widget.favoriteToggled.connect(self.update_favorites)
             widget.checkboxToggled.connect(self.update_task_status)  # Correctly connect the checkboxToggled signal
@@ -119,7 +173,7 @@ class MainWindow(QMainWindow):
             if task[3]:
                 fav_item = QStandardItem()
                 self.fav_model.appendRow(fav_item)
-                fav_widget = TaskItem(task[0], task[1], i, task[2], task[3])
+                fav_widget = TaskItem(task[0], task[1], i, task[2], task[3], task[4])
                 fav_widget.closeClicked.connect(self.remove_item)
                 fav_widget.favoriteToggled.connect(self.update_favorites)
                 fav_widget.checkboxToggled.connect(
@@ -130,21 +184,22 @@ class MainWindow(QMainWindow):
     def update_favorites(self, position, is_favorite):
         self.task_list[position][3] = is_favorite
         self.show_tasks(self.task_list)
-        
+
     def update_task_status(self, position, is_checked):
         self.task_list[position][1] = is_checked
         self.show_tasks(self.task_list)
 
     def add_new_task(self):
         new_task = self.task_input.text().strip()
-        if new_task:
-            import datetime
+        if new_task and self.selected_end_date_time:
             today = datetime.date.today()
             created_date = today.strftime("%d %B")
+            end_date_time_str = self.selected_end_date_time.toString('dd.MM.yyyy HH:mm')
 
-            self.task_list.append([new_task, False, created_date, False])
+            self.task_list.append([new_task, False, created_date, False, end_date_time_str])
             self.show_tasks(self.task_list)
             self.task_input.clear()
+            self.selected_end_date_time = None  # Clear the selected end date and time
 
     def get_all_tasks(self):
         self.task_list = []
@@ -153,20 +208,22 @@ class MainWindow(QMainWindow):
             widget = self.list_view.indexWidget(item.index())
             if isinstance(widget, TaskItem):
                 self.task_list.append(
-                    [widget.get_checkbox_text(), widget.get_checkbox_state(), widget.ui.label_day.text(), widget.get_favorite_state()])
+                    [widget.get_checkbox_text(), widget.get_checkbox_state(), widget.ui.label_day.text(), widget.get_favorite_state(), widget.get_end_date_time()])
 
     def closeEvent(self, event):
         self.get_all_tasks()
+        task_data = []
+        for task in self.task_list:
+            task_data.append([task[0], task[1], task[2], task[3], task[4].toString('dd.MM.yyyy HH:mm')])
+
         with open(self.task_file_path, "w") as f:
-            yaml.dump({"tasks": self.task_list}, f)
+            yaml.dump({"tasks": task_data}, f)
 
     def on_search_btn_clicked(self):
-        # Handle the search button click event
-        pass
+        self.ui.stackedWidget.setCurrentIndex(5)
 
     def on_user_btn_clicked(self):
-        # Handle the user button click event
-        pass
+        self.ui.stackedWidget.setCurrentIndex(6)
 
     def on_stackedWidget_currentChanged(self, index):
         # Handle the stacked widget current changed event
@@ -222,15 +279,39 @@ class MainWindow(QMainWindow):
             self.ui.stackedWidget.setCurrentIndex(4)
             self.ui.options_btn_1.setChecked(True)
 
-    def on_only_today_btn_clicked(self):
-        print("Only today button clicked!")
+    def show_date_time_popup(self):
+        popup = DateTimePopup()
+        if popup.exec():
+            self.selected_end_date_time = popup.get_selected_date_time()
+            print(f"Selected date and time: {self.selected_end_date_time.toString('dd.MM.yyyy HH:mm')}")
 
     def update_current_date(self):
         today = datetime.date.today()
-        formatted_date = today.strftime("%A, %B %d")
-        self.ui.label_current_day.setText(formatted_date)
-        self.ui.label_current_day_2.setText(formatted_date)
-        self.ui.label_current_day_3.setText(formatted_date)
+        self.ui.label_current_day.setText(today.strftime("%d %B, %A"))
+        self.ui.label_current_day_2.setText(today.strftime("%d %B, %A"))
+        self.ui.label_current_day_3.setText(today.strftime("%d %B, %A"))
 
-    def set_text_color_red(self):
-        self.ui.label_current_date.setStyleSheet("color: red;")
+    def on_only_today_btn_clicked(self):
+        self.sort_tasks_by_date()
+
+    def sort_tasks_by_date(self):
+        today = datetime.date.today().strftime("%d %B")
+        today_tasks = [task for task in self.task_list if task[2] == today]
+        other_tasks = [task for task in self.task_list if task[2] != today]
+        self.task_list = today_tasks + other_tasks
+        self.show_tasks(self.task_list)
+
+    def on_btn_more_clicked(self):
+        self.sort_tasks_by_date_left()
+
+    def sort_tasks_by_date_left(self):
+        sorted_tasks = sorted(self.task_list, key=lambda task: datetime.datetime.strptime(task[2], "%d %B"))
+        self.show_tasks(sorted_tasks)
+
+
+# Entry point for the application
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    window = MainWindow()
+    window.show()
+    sys.exit(app.exec())

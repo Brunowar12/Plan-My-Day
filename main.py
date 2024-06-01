@@ -2,7 +2,7 @@ from imports import *
 from splash_screen import SplashScreen
 
 if __name__ == "__main__":
-    import new_icon.resources
+    import new_icon.resources_rc
 
     app = QApplication(sys.argv)
     with open("./static/style.qss", "r") as f:

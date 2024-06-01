@@ -1,5 +1,6 @@
 from imports import *
 
+
 class TaskItem(QWidget):
     closeClicked = pyqtSignal(int)
     favoriteToggled = pyqtSignal(int, bool)
@@ -8,9 +9,10 @@ class TaskItem(QWidget):
     checked_style = "text-decoration: line-through;"
     unchecked_style = "text-decoration: none;"
 
-    def __init__(self, text, state, position, created_date, is_favorite, *args, **kwargs):
+    def __init__(self, text, state, position, created_date, is_favorite, end_date_time, *args, **kwargs):
         super().__init__()
         self.position = position
+        self.end_date_time = QDateTime.fromString(end_date_time, 'dd.MM.yyyy HH:mm')  # Convert string to QDateTime
 
         self.ui = uic.loadUi("./assets/UI/task.ui", self)
         with open("./static/style_task.qss", "r") as f:
@@ -28,7 +30,8 @@ class TaskItem(QWidget):
         self.favorite_checkbox.stateChanged.connect(self.update_favorite)
 
         self.task.stateChanged.connect(self.update_style)
-        self.task.stateChanged.connect(self.emitCheckboxToggled)  # Connect the stateChanged signal to emitCheckboxToggled
+        self.task.stateChanged.connect(
+            self.emitCheckboxToggled)  # Connect the stateChanged signal to emitCheckboxToggled
 
         self.close_btn = self.ui.pushButton_4
         self.close_btn.setText("")
@@ -37,7 +40,10 @@ class TaskItem(QWidget):
 
         self.close_btn.clicked.connect(self.emitCloseSignal)
 
+        self.ui.task_label_end.setText(created_date)
+        self.ui.task_label_end.setText(f"End {self.end_date_time.toString('dd.MM.yyyy HH:mm')}")
         self.ui.label_day.setText(created_date)
+  # Update the end date and time label
 
     def eventFilter(self, obj, event):
         if obj == self.close_btn and event.type() == QEvent.Type.Enter:
@@ -61,8 +67,11 @@ class TaskItem(QWidget):
     def get_favorite_state(self):
         return self.favorite_checkbox.isChecked()
 
+    def get_end_date_time(self):
+        return self.end_date_time  # Return the stored end date and time
+
     def emitCloseSignal(self):
         self.closeClicked.emit(self.position)
-    
+
     def emitCheckboxToggled(self, state):
         self.checkboxToggled.emit(self.position, bool(state))

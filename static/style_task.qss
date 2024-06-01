@@ -2,7 +2,7 @@
 /* Styling for unchecked checkboxes */
 QCheckBox {
     color: #000000; /* Set text color to black for visibility */
-    font-size: 15px; /* Set the font size for readability */
+    font-size: 18px; /* Set the font size for readability */
 }
 
 /* Styling for checked checkboxes */
@@ -55,3 +55,8 @@ QPushButton {
 QPushButton:hover {
     background-image: url("./static/icons/close_on.png");
 }
+
+#task_label,#label_space,#label_day,#label_space_3,#task_label_end, #label_space_2 {
+    color: #000;
+}
+
