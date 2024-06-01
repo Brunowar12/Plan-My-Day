@@ -1,13 +1,15 @@
 from imports import *
+from init_database import *
 from assets.UI.sidebar_ui import Ui_MainWindow as Ui_SidebarWindow
-from task_item import TaskItem
 
 # MAIN APPLICATION WINDOW
-class MainWindow(QMainWindow):
+class MainWindow(QMainWindow, Database):
     def __init__(self):
         super().__init__()
 
         self.ui = Ui_SidebarWindow()
+        self.db_path = os.path.join(os.getcwd(), "tasks.db")
+        init_db(self.db_path)
         self.ui.setupUi(self)
 
         self.ui.icon_only_widget.hide()
@@ -43,9 +45,9 @@ class MainWindow(QMainWindow):
         self.fav_model = QStandardItemModel()  # Model for the favorite task list
         self.history_model = QStandardItemModel()  # Model for the history task list
         self.init_ui()  # Initialize UI components
-
-        self.task_file_path = os.path.join(os.getcwd(), "static/tasks.yaml")  # Task storage file
-        self.history_file_path = os.path.join(os.getcwd(), "static/history.yaml")  # History storage file
+                
+        # self.task_file_path = os.path.join(os.getcwd(), "static/tasks.yaml")  # Task storage file;
+        # self.history_file_path = os.path.join(os.getcwd(), "static/history.yaml")  # History storage file;
 
         self.task_list = self.get_tasks()  # Load tasks from storage
         self.history_list = self.get_history()  # Load history from storage
@@ -63,102 +65,6 @@ class MainWindow(QMainWindow):
         self.list_view_history.setSpacing(5)
 
         self.add_btn.clicked.connect(self.add_new_task)
-
-    def remove_item(self, position):
-        removed_task = self.task_list.pop(position)
-        self.add_to_history(removed_task)
-        self.show_tasks(self.task_list)
-
-    def get_tasks(self):
-        if not os.path.exists(self.task_file_path):
-            with open(self.task_file_path, "w") as f:
-                yaml.dump({"tasks": []}, f)
-        with open(self.task_file_path, "r") as f:
-            tasks = yaml.safe_load(f)
-            if tasks is None or "tasks" not in tasks:
-                return []
-            return tasks["tasks"]
-
-    def get_history(self):
-        if not os.path.exists(self.history_file_path):
-            with open(self.history_file_path, "w") as f:
-                yaml.dump({"tasks": []}, f)
-        with open(self.history_file_path, "r") as f:
-            history = yaml.safe_load(f)
-            if history is None or "tasks" not in history:
-                return []
-            return history["tasks"]
-
-    def add_to_history(self, task):
-        self.history_list.append(task)
-        with open(self.history_file_path, "w") as f:
-            f.write(yaml.dump({"tasks": self.history_list}))
-        self.show_history(self.history_list)
-
-    def show_history(self, history_list):
-        self.history_model.clear()
-        for i, task in enumerate(history_list):
-            item = QStandardItem()
-            self.history_model.appendRow(item)
-            widget = TaskItem(task[0], task[1], i, task[2], task[3])
-            item.setSizeHint(widget.sizeHint())
-            self.list_view_history.setIndexWidget(self.history_model.indexFromItem(item), widget)
-
-    def show_tasks(self, task_list):
-        self.list_model.clear()
-        self.fav_model.clear()
-        for i, task in enumerate(task_list):
-            item = QStandardItem()
-            self.list_model.appendRow(item)
-            widget = TaskItem(task[0], task[1], i, task[2], task[3])
-            widget.closeClicked.connect(self.remove_item)
-            widget.favoriteToggled.connect(self.update_favorites)
-            widget.checkboxToggled.connect(self.update_task_status)  # Correctly connect the checkboxToggled signal
-            item.setSizeHint(widget.sizeHint())
-            self.list_view.setIndexWidget(self.list_model.indexFromItem(item), widget)
-            if task[3]:
-                fav_item = QStandardItem()
-                self.fav_model.appendRow(fav_item)
-                fav_widget = TaskItem(task[0], task[1], i, task[2], task[3])
-                fav_widget.closeClicked.connect(self.remove_item)
-                fav_widget.favoriteToggled.connect(self.update_favorites)
-                fav_widget.checkboxToggled.connect(
-                    self.update_task_status)  # Correctly connect the checkboxToggled signal
-                fav_item.setSizeHint(fav_widget.sizeHint())
-                self.list_view_fav.setIndexWidget(self.fav_model.indexFromItem(fav_item), fav_widget)
-
-    def update_favorites(self, position, is_favorite):
-        self.task_list[position][3] = is_favorite
-        self.show_tasks(self.task_list)
-        
-    def update_task_status(self, position, is_checked):
-        self.task_list[position][1] = is_checked
-        self.show_tasks(self.task_list)
-
-    def add_new_task(self):
-        new_task = self.task_input.text().strip()
-        if new_task:
-            import datetime
-            today = datetime.date.today()
-            created_date = today.strftime("%d %B")
-
-            self.task_list.append([new_task, False, created_date, False])
-            self.show_tasks(self.task_list)
-            self.task_input.clear()
-
-    def get_all_tasks(self):
-        self.task_list = []
-        for row in range(self.list_model.rowCount()):
-            item = self.list_model.item(row, 0)
-            widget = self.list_view.indexWidget(item.index())
-            if isinstance(widget, TaskItem):
-                self.task_list.append(
-                    [widget.get_checkbox_text(), widget.get_checkbox_state(), widget.ui.label_day.text(), widget.get_favorite_state()])
-
-    def closeEvent(self, event):
-        self.get_all_tasks()
-        with open(self.task_file_path, "w") as f:
-            yaml.dump({"tasks": self.task_list}, f)
 
     def on_search_btn_clicked(self):
         # Handle the search button click event
