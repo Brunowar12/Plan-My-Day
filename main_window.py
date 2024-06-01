@@ -104,7 +104,7 @@ class MainWindow(QMainWindow):
                 self.setStyleSheet(stream.readAll())
                 dark_theme.close()
             else:
-                print("Не удалось открыть файл темы.")
+                print("Failed to open theme file.")
         else:
             self.setStyleSheet(open("./static/style.qss").read())
 
