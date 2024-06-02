@@ -18,7 +18,7 @@ class AuthWindow(QMainWindow, Ui_AuthWindow):
     def login(self):
         email = self.input_email.text()
         password = self.input_password.text()
-        if email == "test@example.com" and password == "password":
+        if email == "test@example.com" and password == "password": # YAML check
             QMessageBox.information(self, "Login", "Login successful")
         else:
             QMessageBox.warning(self, "Login", "Invalid email or password")
