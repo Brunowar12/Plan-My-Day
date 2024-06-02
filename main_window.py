@@ -4,11 +4,16 @@ from task_item import TaskItem
 
 
 # POPUP WINDOW CLASS
+# POPUP WINDOW CLASS
 class DateTimePopup(QtWidgets.QDialog):
     def __init__(self):
         super().__init__()
         uic.loadUi('./assets/UI/date_time_popup.ui', self)
         self.setStyleSheet(open("./static/style.qss").read())
+
+        # Access and resize the internal calendar widget
+        calendar = self.dateTimeEdit.calendarWidget()
+        calendar.setFixedSize(350, 250)
 
         # Set today's date and time as default
         current_date_time = QDateTime.currentDateTime()
@@ -23,6 +28,7 @@ class DateTimePopup(QtWidgets.QDialog):
 
     def get_selected_date_time(self):
         return self.dateTimeEdit.dateTime()
+
 
 
 # MAIN APPLICATION WINDOW
@@ -167,7 +173,20 @@ class MainWindow(QMainWindow):
             widget = TaskItem(task[0], task[1], i, task[2], task[3], task[4])
             widget.closeClicked.connect(self.remove_item)
             widget.favoriteToggled.connect(self.update_favorites)
-            widget.checkboxToggled.connect(self.update_task_status)  # Correctly connect the checkboxToggled signal
+            widget.checkboxToggled.connect(self.update_task_status)
+
+            # Update task status and set styles accordingly
+            end_date_time = QDateTime.fromString(task[4], 'dd.MM.yyyy HH:mm')
+            if widget.ui.checkBox_3.isChecked():
+                widget.ui.label_task_status.setText("Task Completed")
+                widget.ui.label_task_status.setStyleSheet("color: green;")
+            elif end_date_time < QDateTime.currentDateTime():
+                widget.ui.label_task_status.setText("Task Expired")
+                widget.ui.label_task_status.setStyleSheet("color: red;")
+            else:
+                widget.ui.label_task_status.setText("Task In Progress")
+                widget.ui.label_task_status.setStyleSheet("color: yellow;")
+
             item.setSizeHint(widget.sizeHint())
             self.list_view.setIndexWidget(self.list_model.indexFromItem(item), widget)
             if task[3]:
@@ -176,8 +195,20 @@ class MainWindow(QMainWindow):
                 fav_widget = TaskItem(task[0], task[1], i, task[2], task[3], task[4])
                 fav_widget.closeClicked.connect(self.remove_item)
                 fav_widget.favoriteToggled.connect(self.update_favorites)
-                fav_widget.checkboxToggled.connect(
-                    self.update_task_status)  # Correctly connect the checkboxToggled signal
+                fav_widget.checkboxToggled.connect(self.update_task_status)
+
+                # Update task status and set styles accordingly
+                end_date_time = QDateTime.fromString(task[4], 'dd.MM.yyyy HH:mm')
+                if fav_widget.ui.checkBox_3.isChecked():
+                    fav_widget.ui.label_task_status.setText("Task Completed")
+                    fav_widget.ui.label_task_status.setStyleSheet("color: green;")
+                elif end_date_time < QDateTime.currentDateTime():
+                    fav_widget.ui.label_task_status.setText("Task Expired")
+                    fav_widget.ui.label_task_status.setStyleSheet("color: red;")
+                else:
+                    fav_widget.ui.label_task_status.setText("Task In Progress")
+                    fav_widget.ui.label_task_status.setStyleSheet("color: yellow;")
+
                 fav_item.setSizeHint(fav_widget.sizeHint())
                 self.list_view_fav.setIndexWidget(self.fav_model.indexFromItem(fav_item), fav_widget)
 
@@ -208,7 +239,8 @@ class MainWindow(QMainWindow):
             widget = self.list_view.indexWidget(item.index())
             if isinstance(widget, TaskItem):
                 self.task_list.append(
-                    [widget.get_checkbox_text(), widget.get_checkbox_state(), widget.ui.label_day.text(), widget.get_favorite_state(), widget.get_end_date_time()])
+                    [widget.get_checkbox_text(), widget.get_checkbox_state(), widget.ui.label_day.text(),
+                     widget.get_favorite_state(), widget.get_end_date_time()])
 
     def closeEvent(self, event):
         self.get_all_tasks()

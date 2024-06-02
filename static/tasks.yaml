@@ -1,21 +1,16 @@
 tasks:
-- - "\u0442\u0435\u0441\u0442 50"
+- - TEST1
   - false
-  - 01 June
+  - 02 June
+  - false
+  - 02.06.2024 08:50
+- - TEST2
+  - false
+  - 02 June
+  - false
+  - 03.06.2024 08:49
+- - TEST3
   - true
-  - 02.06.2024 11:02
-- - ntcnfidhfujaf
-  - true
-  - 01 June
+  - 02 June
   - false
-  - 28.06.2024 17:41
-- - test 45
-  - true
-  - 31 May
-  - false
-  - 31.05.2024 23:23
-- - "\u0442\u0435\u0441\u0442 \u0441\u0440\u043E\u0447\u043D\u044B\u0439"
-  - false
-  - 31 May
-  - false
-  - 31.05.2024 23:29
+  - 02.06.2024 08:55
