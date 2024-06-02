@@ -120,21 +120,6 @@
    <item>
     <widget class="QWidget" name="sub_widget" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <property name="spacing">
-       <number>10</number>
-      </property>
-      <property name="leftMargin">
-       <number>30</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>20</number>
-      </property>
       <item>
        <widget class="QLabel" name="task_label">
         <property name="maximumSize">
@@ -171,7 +156,7 @@
        <widget class="QLabel" name="label_day">
         <property name="maximumSize">
          <size>
-          <width>100</width>
+          <width>80</width>
           <height>20</height>
          </size>
         </property>
@@ -179,15 +164,15 @@
          <string>Today</string>
         </property>
         <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_space_2">
+       <widget class="QLabel" name="label_space_3">
         <property name="maximumSize">
          <size>
-          <width>16777215</width>
+          <width>5</width>
           <height>20</height>
          </size>
         </property>
@@ -196,6 +181,48 @@
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="task_label_end">
+        <property name="maximumSize">
+         <size>
+          <width>150</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>End 18.05.2024</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_space_2">
+        <property name="maximumSize">
+         <size>
+          <width>25</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>.</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_task_status">
+        <property name="text">
+         <string>Task: Active</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>

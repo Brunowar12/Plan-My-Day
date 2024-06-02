@@ -175,6 +175,9 @@
   #add_btn_task {
     border: none;
   }
+  #add_btn_time {
+    border: none;
+  }
 
   #add_task {
     margin-top: 1px;
