@@ -8,6 +8,7 @@ class AuthWindow(QMainWindow, Ui_AuthWindow):
         super().__init__()
         self.setupUi(self)
         self.initUI()
+        self.yaml_file_path = os.path.join(os.getcwd(), "accounts.yaml")
 
     def initUI(self):
         self.auth_login_button.clicked.connect(self.login)
@@ -18,7 +19,10 @@ class AuthWindow(QMainWindow, Ui_AuthWindow):
     def login(self):
         email = self.input_email.text()
         password = self.input_password.text()
-        if email == "test@example.com" and password == "password": # YAML check
+        
+        accounts = read_from_yaml(self.yaml_file_path)
+        
+        if email in accounts and accounts[email]['password'] == password:
             QMessageBox.information(self, "Login", "Login successful")
         else:
             QMessageBox.warning(self, "Login", "Invalid email or password")
@@ -90,7 +94,27 @@ class AuthWindow(QMainWindow, Ui_AuthWindow):
         email = self.input_email.text()
         password = self.input_password.text()
         conf_password = self.confpassword_input.text()
+        
         if password == conf_password:
-            QMessageBox.information(self, "Create Account", "Account created successfully")
+            accounts = read_from_yaml(self.yaml_file_path)
+            if email in accounts:
+                QMessageBox.warning(self, "Create Account", "Account already exists")
+            else:
+                accounts[email] = {'password': password}
+                write_to_yaml(self.yaml_file_path, accounts)
+                QMessageBox.information(self, "Create Account", "Account created successfully")
+                self.offline_mode()
         else:
             QMessageBox.warning(self, "Create Account", "Passwords do not match")
+
+            
+def write_to_yaml(file_path, data):
+    with open(file_path, 'w') as file:
+        yaml.dump(data, file)
+
+def read_from_yaml(file_path):
+    if not os.path.exists(file_path):
+        return {}
+    with open(file_path, 'r') as file:
+        return yaml.safe_load(file) or {}
+
