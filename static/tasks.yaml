@@ -1,13 +1,16 @@
 tasks:
-- - fasdfsadfasdf
+- - TEST1
+  - true
+  - 02 June
+  - true
+  - 02.06.2024 08:50
+- - TEST2
   - false
-  - 28 May
+  - 02 June
   - false
-- - asdfasdfasdf
+  - 03.06.2024 08:49
+- - TEST3
+  - true
+  - 02 June
   - false
-  - 28 May
-  - false
-- - asdfsadfasdfsadf
-  - false
-  - 28 May
-  - false
+  - 02.06.2024 08:55

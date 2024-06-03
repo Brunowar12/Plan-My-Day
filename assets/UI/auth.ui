@@ -112,7 +112,7 @@ border-radius: 15px;</string>
              <string/>
             </property>
             <property name="pixmap">
-             <pixmap resource="new_icon/resources.qrc">:/icon/logo.png</pixmap>
+             <pixmap>:/icon/logo.png</pixmap>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -123,7 +123,9 @@ border-radius: 15px;</string>
            <widget class="QLabel" name="label_header_text">
             <property name="font">
              <font>
+              <family>Arial</family>
               <pointsize>32</pointsize>
+              <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
@@ -241,7 +243,8 @@ max-width: 300px;
                <property name="font">
                 <font>
                  <family>Arial</family>
-                 <pointsize>28</pointsize>
+                 <pointsize>20</pointsize>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -266,12 +269,14 @@ max-width: 300px;
                <property name="maximumSize">
                 <size>
                  <width>300</width>
-                 <height>20</height>
+                 <height>40</height>
                 </size>
                </property>
                <property name="font">
                 <font>
+                 <family>Arial</family>
                  <pointsize>16</pointsize>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -301,7 +306,7 @@ max-width: 300px;
                </property>
                <property name="font">
                 <font>
-                 <pointsize>20</pointsize>
+                 <pointsize>14</pointsize>
                  <italic>true</italic>
                 </font>
                </property>
@@ -336,7 +341,9 @@ max-width: 300px;
                </property>
                <property name="font">
                 <font>
-                 <pointsize>16</pointsize>
+                 <family>Arial</family>
+                 <pointsize>14</pointsize>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -373,7 +380,9 @@ max-width: 300px;
                </property>
                <property name="font">
                 <font>
+                 <family>Arial</family>
                  <pointsize>14</pointsize>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -407,7 +416,9 @@ max-width: 300px;
             </property>
             <property name="font">
              <font>
+              <family>Arial</family>
               <pointsize>14</pointsize>
+              <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
@@ -471,7 +482,9 @@ max-width: 300px;
             </property>
             <property name="font">
              <font>
+              <family>Arial</family>
               <pointsize>15</pointsize>
+              <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
@@ -513,7 +526,9 @@ color: rgb(139, 139, 139)</string>
               <widget class="QLabel" name="email_title">
                <property name="font">
                 <font>
+                 <family>Arial</family>
                  <pointsize>16</pointsize>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -530,7 +545,9 @@ background-color: none;</string>
               <widget class="QLineEdit" name="input_email">
                <property name="font">
                 <font>
+                 <family>Arial</family>
                  <pointsize>11</pointsize>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -606,7 +623,9 @@ background-color: rgba(255, 255, 255, 0);</string>
               <widget class="QLabel" name="password_title">
                <property name="font">
                 <font>
+                 <family>Arial</family>
                  <pointsize>16</pointsize>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -623,7 +642,9 @@ background-color: none;</string>
               <widget class="QLineEdit" name="input_password">
                <property name="font">
                 <font>
+                 <family>Arial</family>
                  <pointsize>11</pointsize>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -684,7 +705,9 @@ background-color: rgba(255, 255, 255, 0);</string>
               <widget class="QLabel" name="confpassword_title">
                <property name="font">
                 <font>
+                 <family>Arial</family>
                  <pointsize>16</pointsize>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -701,7 +724,9 @@ background-color: none;</string>
               <widget class="QLineEdit" name="confpassword_input">
                <property name="font">
                 <font>
+                 <family>Arial</family>
                  <pointsize>11</pointsize>
+                 <weight>75</weight>
                  <bold>true</bold>
                 </font>
                </property>
@@ -764,7 +789,9 @@ background-color: rgba(255, 255, 255, 0);</string>
             </property>
             <property name="font">
              <font>
+              <family>Arial</family>
               <pointsize>14</pointsize>
+              <weight>75</weight>
               <bold>true</bold>
              </font>
             </property>
