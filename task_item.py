@@ -7,10 +7,14 @@ class TaskItem(QWidget):
 
     checked_style = "text-decoration: line-through;"
     unchecked_style = "text-decoration: none;"
+    expired_style = "color: red;"
+    in_progress_style = "color: yellow;"
+    completed_style = "color: green;"
 
-    def __init__(self, text, state, position, created_date, is_favorite, *args, **kwargs):
+    def __init__(self, text, state, position, created_date, is_favorite, end_date_time, *args, **kwargs):
         super().__init__()
         self.position = position
+        self.end_date_time = QDateTime.fromString(end_date_time, 'dd.MM.yyyy HH:mm')  # Convert string to QDateTime
 
         self.ui = uic.loadUi("./assets/UI/task.ui", self)
         with open("./static/style_task.qss", "r") as f:
@@ -22,6 +26,8 @@ class TaskItem(QWidget):
         self.task.setChecked(state)
         if state:
             self.task.setStyleSheet(self.checked_style)
+        else:
+            self.task.setStyleSheet(self.unchecked_style)
 
         self.favorite_checkbox = self.ui.check_favorite
         self.favorite_checkbox.setChecked(is_favorite)
@@ -37,7 +43,11 @@ class TaskItem(QWidget):
 
         self.close_btn.clicked.connect(self.emitCloseSignal)
 
+        self.ui.task_label_end.setText(created_date)
+        self.ui.task_label_end.setText(f"End {self.end_date_time.toString('dd.MM.yyyy HH:mm')}")
         self.ui.label_day.setText(created_date)
+
+        self.update_task_status()  # Update task status initially
 
     def eventFilter(self, obj, event):
         if obj == self.close_btn and event.type() == QEvent.Type.Enter:
@@ -48,6 +58,7 @@ class TaskItem(QWidget):
 
     def update_style(self, state):
         self.task.setStyleSheet(self.checked_style if state else self.unchecked_style)
+        self.update_task_status()
 
     def update_favorite(self, state):
         self.favoriteToggled.emit(self.position, bool(state))
@@ -61,8 +72,31 @@ class TaskItem(QWidget):
     def get_favorite_state(self):
         return self.favorite_checkbox.isChecked()
 
+    def get_end_date_time(self):
+        return self.end_date_time  # Return the stored end date and time
+
     def emitCloseSignal(self):
         self.closeClicked.emit(self.position)
-    
+
     def emitCheckboxToggled(self, state):
         self.checkboxToggled.emit(self.position, bool(state))
+
+    def set_expired_style(self):
+        self.ui.label_task_status.setStyleSheet(self.expired_style)
+
+    def set_in_progress_style(self):
+        self.ui.label_task_status.setStyleSheet(self.in_progress_style)
+
+    def set_completed_style(self):
+        self.ui.label_task_status.setStyleSheet(self.completed_style)
+
+    def update_task_status(self):
+        if self.task.isChecked():
+            self.ui.label_task_status.setText("Task Completed")
+            self.set_completed_style()
+        elif self.end_date_time < QDateTime.currentDateTime():
+            self.ui.label_task_status.setText("Task Expired")
+            self.set_expired_style()
+        else:
+            self.ui.label_task_status.setText("Task In Progress")
+            self.set_in_progress_style()

@@ -8,6 +8,7 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
+
 class Ui_SplashScreen(object):
     def setupUi(self, SplashScreen):
         SplashScreen.setObjectName("SplashScreen")

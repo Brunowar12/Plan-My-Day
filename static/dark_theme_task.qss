@@ -1,0 +1,12 @@
+
+/* Styling for unchecked checkboxes */
+QCheckBox {
+    color: #fff; /* Set text color to black for visibility */
+    font-size: 18px; /* Set the font size for readability */
+}
+
+/* Styling for checked checkboxes */
+QCheckBox:checked {
+    text-decoration: line-through; /* Cross out text to indicate completion */
+    color: #808080; /* Change text color to grey to differentiate from unchecked */
+}

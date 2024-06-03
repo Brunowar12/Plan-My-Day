@@ -51,8 +51,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_4.addWidget(self.label_header_img)
         self.label_header_text = QtWidgets.QLabel(parent=self.header_title)
         font = QtGui.QFont()
+        font.setFamily("Arial")
         font.setPointSize(32)
         font.setBold(True)
+        font.setWeight(75)
         self.label_header_text.setFont(font)
         self.label_header_text.setStyleSheet("background-color: none;\n"
 "color: black;")
@@ -97,8 +99,9 @@ class Ui_MainWindow(object):
         self.label_auth_title.setMaximumSize(QtCore.QSize(16777215, 50))
         font = QtGui.QFont()
         font.setFamily("Arial")
-        font.setPointSize(28)
+        font.setPointSize(20)
         font.setBold(True)
+        font.setWeight(75)
         self.label_auth_title.setFont(font)
         self.label_auth_title.setStyleSheet("QLabel {\n"
 "    \n"
@@ -110,10 +113,12 @@ class Ui_MainWindow(object):
         self.label_auth_title.setObjectName("label_auth_title")
         self.verticalLayout_7.addWidget(self.label_auth_title)
         self.label_auth_subtitle = QtWidgets.QLabel(parent=self.auth)
-        self.label_auth_subtitle.setMaximumSize(QtCore.QSize(300, 20))
+        self.label_auth_subtitle.setMaximumSize(QtCore.QSize(300, 40))
         font = QtGui.QFont()
+        font.setFamily("Arial")
         font.setPointSize(16)
         font.setBold(True)
+        font.setWeight(75)
         self.label_auth_subtitle.setFont(font)
         self.label_auth_subtitle.setStyleSheet("QLabel {\n"
 "    \n"
@@ -127,7 +132,7 @@ class Ui_MainWindow(object):
         self.auth_login = QtWidgets.QLabel(parent=self.auth)
         self.auth_login.setMaximumSize(QtCore.QSize(300, 40))
         font = QtGui.QFont()
-        font.setPointSize(20)
+        font.setPointSize(14)
         font.setItalic(True)
         self.auth_login.setFont(font)
         self.auth_login.setStyleSheet("QLabel {\n"
@@ -142,8 +147,10 @@ class Ui_MainWindow(object):
         self.auth_login_button.setMinimumSize(QtCore.QSize(0, 40))
         self.auth_login_button.setMaximumSize(QtCore.QSize(300, 40))
         font = QtGui.QFont()
-        font.setPointSize(16)
+        font.setFamily("Arial")
+        font.setPointSize(14)
         font.setBold(True)
+        font.setWeight(75)
         self.auth_login_button.setFont(font)
         self.auth_login_button.setStyleSheet("    color: white;\n"
 "    background-color: rgb(115, 44, 133);\n"
@@ -160,8 +167,10 @@ class Ui_MainWindow(object):
         self.auth_change_button.setMinimumSize(QtCore.QSize(0, 40))
         self.auth_change_button.setMaximumSize(QtCore.QSize(300, 40))
         font = QtGui.QFont()
+        font.setFamily("Arial")
         font.setPointSize(14)
         font.setBold(True)
+        font.setWeight(75)
         self.auth_change_button.setFont(font)
         self.auth_change_button.setStyleSheet("    color: black;\n"
 "    background-color: white;\n"
@@ -174,8 +183,10 @@ class Ui_MainWindow(object):
         self.offline_button.setMinimumSize(QtCore.QSize(280, 59))
         self.offline_button.setMaximumSize(QtCore.QSize(300, 59))
         font = QtGui.QFont()
+        font.setFamily("Arial")
         font.setPointSize(14)
         font.setBold(True)
+        font.setWeight(75)
         self.offline_button.setFont(font)
         self.offline_button.setStyleSheet("    color: white;\n"
 "    background-color: rgb(68, 25, 97);\n"
@@ -197,8 +208,10 @@ class Ui_MainWindow(object):
         self.frame_registrarion_title = QtWidgets.QLabel(parent=self.frame_registration)
         self.frame_registrarion_title.setMaximumSize(QtCore.QSize(16777215, 40))
         font = QtGui.QFont()
+        font.setFamily("Arial")
         font.setPointSize(15)
         font.setBold(True)
+        font.setWeight(75)
         self.frame_registrarion_title.setFont(font)
         self.frame_registrarion_title.setStyleSheet("background-color: none;\n"
 "color: rgb(139, 139, 139)")
@@ -216,8 +229,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.email_title = QtWidgets.QLabel(parent=self.frame_email)
         font = QtGui.QFont()
+        font.setFamily("Arial")
         font.setPointSize(16)
         font.setBold(True)
+        font.setWeight(75)
         self.email_title.setFont(font)
         self.email_title.setStyleSheet("color: black;\n"
 "background-color: none;")
@@ -225,8 +240,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.addWidget(self.email_title)
         self.input_email = QtWidgets.QLineEdit(parent=self.frame_email)
         font = QtGui.QFont()
+        font.setFamily("Arial")
         font.setPointSize(11)
         font.setBold(True)
+        font.setWeight(75)
         self.input_email.setFont(font)
         self.input_email.setStyleSheet("color: rgb(139, 139, 139);\n"
 "background-color: rgba(255, 255, 255, 0);")
@@ -264,8 +281,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.setObjectName("verticalLayout_4")
         self.password_title = QtWidgets.QLabel(parent=self.frame_password)
         font = QtGui.QFont()
+        font.setFamily("Arial")
         font.setPointSize(16)
         font.setBold(True)
+        font.setWeight(75)
         self.password_title.setFont(font)
         self.password_title.setStyleSheet("color: black;\n"
 "background-color: none;")
@@ -273,8 +292,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addWidget(self.password_title)
         self.input_password = QtWidgets.QLineEdit(parent=self.frame_password)
         font = QtGui.QFont()
+        font.setFamily("Arial")
         font.setPointSize(11)
         font.setBold(True)
+        font.setWeight(75)
         self.input_password.setFont(font)
         self.input_password.setStyleSheet("color: rgb(139, 139, 139);\n"
 "background-color: rgba(255, 255, 255, 0);")
@@ -303,8 +324,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.confpassword_title = QtWidgets.QLabel(parent=self.frame_confpassword)
         font = QtGui.QFont()
+        font.setFamily("Arial")
         font.setPointSize(16)
         font.setBold(True)
+        font.setWeight(75)
         self.confpassword_title.setFont(font)
         self.confpassword_title.setStyleSheet("color: black;\n"
 "background-color: none;")
@@ -312,8 +335,10 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.addWidget(self.confpassword_title)
         self.confpassword_input = QtWidgets.QLineEdit(parent=self.frame_confpassword)
         font = QtGui.QFont()
+        font.setFamily("Arial")
         font.setPointSize(11)
         font.setBold(True)
+        font.setWeight(75)
         self.confpassword_input.setFont(font)
         self.confpassword_input.setStyleSheet("color: rgb(139, 139, 139);\n"
 "background-color: rgba(255, 255, 255, 0);")
@@ -343,8 +368,10 @@ class Ui_MainWindow(object):
         self.button_create.setMinimumSize(QtCore.QSize(280, 59))
         self.button_create.setMaximumSize(QtCore.QSize(280, 59))
         font = QtGui.QFont()
+        font.setFamily("Arial")
         font.setPointSize(14)
         font.setBold(True)
+        font.setWeight(75)
         self.button_create.setFont(font)
         self.button_create.setStyleSheet("    color: white;\n"
 "    background-color: rgb(68, 25, 97);\n"
