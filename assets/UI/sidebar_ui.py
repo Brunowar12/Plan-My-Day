@@ -765,7 +765,7 @@ class Ui_MainWindow(object):
         self.label_7.setText(_translate("MainWindow", "Task history"))
         self.label_current_day_3.setText(_translate("MainWindow", "Monday, April 1"))
         self.label_change_theme.setText(_translate("MainWindow", "Dark Theme"))
-        self.label_change_lang.setText(_translate("MainWindow", "Change the language"))
+        self.label_change_lang.setText(_translate("MainWindow", "Change language(todo)"))
         self.comoBox_lang.setItemText(0, _translate("MainWindow", "EN"))
         self.comoBox_lang.setItemText(1, _translate("MainWindow", "UA"))
         self.label_2.setText(_translate("MainWindow", "Options"))

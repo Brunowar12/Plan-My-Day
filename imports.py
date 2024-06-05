@@ -15,6 +15,7 @@ from PyQt6.QtCore import (
     QEvent,
     QDateTime,
     QSettings,
+    QDate
 )
 from PyQt6.QtGui import (
     QColor,
@@ -23,6 +24,9 @@ from PyQt6.QtGui import (
     QIcon,
     QFont,
     QFontDatabase,
+    QTextCharFormat,
+    QColor,
+    QBrush
 )
 from PyQt6.QtWidgets import (
     QApplication,
@@ -38,4 +42,4 @@ from PyQt6.QtWidgets import (
     QCheckBox,
     QSizePolicy,
 )
-from PyQt6 import uic, QtWidgets, QtCore
+from PyQt6 import uic, QtWidgets, QtCore, QtGui

@@ -28,13 +28,29 @@ def init_db(db_path):
     conn.close()
 
 class Database:
-    def get_tasks(self):
+    def execute_query(self, query, params=()):
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
-        cursor.execute('SELECT id, task, completed, created_date, favorite, end_date_time FROM tasks')
-        tasks = cursor.fetchall()
+        cursor.execute(query, params)
+        results = cursor.fetchall()
         conn.close()
-        return tasks
+        return results
+
+    def get_tasks(self):
+        query = 'SELECT id, task, completed, created_date, favorite, end_date_time FROM tasks'
+        return self.execute_query(query)
+
+    def get_tasks_for_today(self):
+        today = datetime.date.today().strftime("%d.%m.%Y")
+        query = f"SELECT * FROM tasks WHERE end_date_time >= ?"
+        tasks = self.execute_query(query, (today,))
+        self.show_tasks(tasks)
+
+    def sort_tasks_by_deadline(self):
+        order = "ASC"
+        query = f"SELECT id, task, completed, created_date, favorite, end_date_time FROM tasks ORDER BY end_date_time {order}"
+        tasks = self.execute_query(query)
+        self.show_tasks(tasks)
 
     def get_history(self):
         conn = sqlite3.connect(self.db_path)
@@ -58,15 +74,18 @@ class Database:
         self.show_tasks(self.task_list)
 
     def remove_item(self, position):
-        task_id = self.task_list[position][0]
+        task = self.task_list[position]  # Зберігаємо завдання для історії
+        task_id = task[0]
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         cursor.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
         conn.commit()
         conn.close()
-        self.task_list = self.get_tasks()
-        self.add_to_history(self.task_list[position])
-        self.show_tasks(self.task_list)
+        
+        self.add_to_history(task)  # Додаємо збережене завдання до історії
+        
+        self.task_list = self.get_tasks()  # Оновлюємо список завдань
+        self.show_tasks(self.task_list)  # Показуємо оновлений список завдань
 
     def add_to_history(self, task):
         conn = sqlite3.connect(self.db_path)
@@ -80,56 +99,45 @@ class Database:
         self.history_list = self.get_history()
         self.show_history(self.history_list)
 
+    def update_task_view(self, model, task):
+        item = QStandardItem()
+        model.appendRow(item)
+        widget = TaskItem(task[1], task[2], model.rowCount() - 1, task[3], task[4], task[5])
+        widget.closeClicked.connect(self.remove_item)
+        widget.favoriteToggled.connect(self.update_favorites)
+        widget.checkboxToggled.connect(self.update_task_status)
+
+        end_date_time = QDateTime.fromString(task[5], 'dd.MM.yyyy HH:mm')
+        if widget.ui.checkBox_3.isChecked():
+            status_text = "Task Completed"
+            status_color = "green"
+        elif end_date_time < QDateTime.currentDateTime():
+            status_text = "Task Expired"
+            status_color = "red"
+        else:
+            status_text = "Task In Progress"
+            status_color = "yellow"
+
+        widget.ui.label_task_status.setText(status_text)
+        widget.ui.label_task_status.setStyleSheet(f"color: {status_color};")
+
+        item.setSizeHint(widget.sizeHint())
+        return item, widget
+
     def show_tasks(self, task_list):
         self.list_model.clear()
         self.fav_model.clear()
-        for i, task in enumerate(task_list):
+
+        for task in task_list:
             if len(task) < 6:
-                print(f"Invalid task format at index {i}: {task}")
+                print(f"Invalid task format: {task}")
                 continue
 
-            item = QStandardItem()
-            self.list_model.appendRow(item)
-            widget = TaskItem(task[1], task[2], i, task[3], task[4], task[5])
-            widget.closeClicked.connect(self.remove_item)
-            widget.favoriteToggled.connect(self.update_favorites)
-            widget.checkboxToggled.connect(self.update_task_status)
-
-            # Update task status and set styles accordingly
-            end_date_time = QDateTime.fromString(task[5], 'dd.MM.yyyy HH:mm')
-            if widget.ui.checkBox_3.isChecked():
-                widget.ui.label_task_status.setText("Task Completed")
-                widget.ui.label_task_status.setStyleSheet("color: green;")
-            elif end_date_time < QDateTime.currentDateTime():
-                widget.ui.label_task_status.setText("Task Expired")
-                widget.ui.label_task_status.setStyleSheet("color: red;")
-            else:
-                widget.ui.label_task_status.setText("Task In Progress")
-                widget.ui.label_task_status.setStyleSheet("color: yellow;")
-
-            item.setSizeHint(widget.sizeHint())
+            item, widget = self.update_task_view(self.list_model, task)
             self.list_view.setIndexWidget(self.list_model.indexFromItem(item), widget)
+
             if task[4]:
-                fav_item = QStandardItem()
-                self.fav_model.appendRow(fav_item)
-                fav_widget = TaskItem(task[1], task[2], i, task[3], task[4], task[5])
-                fav_widget.closeClicked.connect(self.remove_item)
-                fav_widget.favoriteToggled.connect(self.update_favorites)
-                fav_widget.checkboxToggled.connect(self.update_task_status)
-
-                # Update task status and set styles accordingly
-                end_date_time = QDateTime.fromString(task[5], 'dd.MM.yyyy HH:mm')
-                if fav_widget.ui.checkBox_3.isChecked():
-                    fav_widget.ui.label_task_status.setText("Task Completed")
-                    fav_widget.ui.label_task_status.setStyleSheet("color: green;")
-                elif end_date_time < QDateTime.currentDateTime():
-                    fav_widget.ui.label_task_status.setText("Task Expired")
-                    fav_widget.ui.label_task_status.setStyleSheet("color: red;")
-                else:
-                    fav_widget.ui.label_task_status.setText("Task In Progress")
-                    fav_widget.ui.label_task_status.setStyleSheet("color: yellow;")
-
-                fav_item.setSizeHint(fav_widget.sizeHint())
+                fav_item, fav_widget = self.update_task_view(self.fav_model, task)
                 self.list_view_fav.setIndexWidget(self.fav_model.indexFromItem(fav_item), fav_widget)
 
     def show_history(self, history_list):
@@ -141,25 +149,22 @@ class Database:
             item.setSizeHint(widget.sizeHint())
             self.list_view_history.setIndexWidget(self.history_model.indexFromItem(item), widget)
 
-    def update_favorites(self, position, is_favorite):
-        task_id = self.task_list[position][0]
+    def update_database(self, task_id, column, value):
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
-        cursor.execute('UPDATE tasks SET favorite = ? WHERE id = ?', (is_favorite, task_id))
+        cursor.execute(f'UPDATE tasks SET {column} = ? WHERE id = ?', (value, task_id))
         conn.commit()
         conn.close()
         self.task_list = self.get_tasks()
         self.show_tasks(self.task_list)
 
+    def update_favorites(self, position, is_favorite):
+        task_id = self.task_list[position][0]
+        self.update_database(task_id, 'favorite', is_favorite)
+
     def update_task_status(self, position, is_checked):
         task_id = self.task_list[position][0]
-        conn = sqlite3.connect(self.db_path)
-        cursor = conn.cursor()
-        cursor.execute('UPDATE tasks SET completed = ? WHERE id = ?', (is_checked, task_id))
-        conn.commit()
-        conn.close()
-        self.task_list = self.get_tasks()
-        self.show_tasks(self.task_list)
+        self.update_database(task_id, 'completed', is_checked)
 
     def add_new_task(self):
         new_task = self.task_input.text().strip()
@@ -184,6 +189,17 @@ class Database:
                 bool(task[4]),  # Favorite
                 QDateTime.fromString(task[5], 'dd.MM.yyyy HH:mm')  # End date time
             ])
+            
+    def get_tasks_by_title(self, title):
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM tasks WHERE title = ?', (title,))
+        found_tasks = cursor.fetchall()
+        
+        # Переносимо знайдені завдання в самий верх списку
+        self.task_list = [task for task in found_tasks] + [task for task in self.task_list if task not in found_tasks]
+        
+        conn.close()
 
     def closeEvent(self, event):
         self.get_all_tasks()

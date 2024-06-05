@@ -1267,7 +1267,7 @@ background-color: transparent;</string>
                  </font>
                 </property>
                 <property name="text">
-                 <string>Change the language</string>
+                 <string>Change language(todo)</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
