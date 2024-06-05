@@ -3,6 +3,7 @@ from assets.UI.ui_splash_screen import Ui_SplashScreen
 from auth_window import AuthWindow
 from constans import *
 
+
 class SplashScreen(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -33,8 +34,18 @@ class SplashScreen(QMainWindow):
         self.ui.label_description.setText("<strong>WELCOME</strong> TO MY APPLICATION")
 
         ## CHANGE DESCRIPTION TEXT
-        QTimer.singleShot(1500, lambda: self.ui.label_description.setText("<strong>LOADING</strong> DATABASE"))
-        QTimer.singleShot(3000, lambda: self.ui.label_description.setText("<strong>LOADING</strong> USER INTERFACE"))
+        QTimer.singleShot(
+            1500,
+            lambda: self.ui.label_description.setText(
+                "<strong>LOADING</strong> DATABASE"
+            ),
+        )
+        QTimer.singleShot(
+            3000,
+            lambda: self.ui.label_description.setText(
+                "<strong>LOADING</strong> USER INTERFACE"
+            ),
+        )
 
         ## SHOW ==> MAIN WINDOW
         QTimer.singleShot(4500, self.show_main_window)

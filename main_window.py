@@ -30,7 +30,6 @@ class DateTimePopup(QtWidgets.QDialog):
     def get_selected_date_time(self):
         return self.dateTimeEdit.dateTime()
 
-
 # MAIN APPLICATION WINDOW
 class MainWindow(QMainWindow, Database):
     def __init__(self):
@@ -102,6 +101,9 @@ class MainWindow(QMainWindow, Database):
 
         self.selected_end_date_time = None  # Store the selected end date and time
 
+        # Highlight tasks in calendar
+        self.highlight_tasks_in_calendar()
+
     def toggle_dark_mode(self, state):
         self.settings.setValue("darkModeEnabled", bool(state))
         self.apply_dark_mode(bool(state))
@@ -129,7 +131,8 @@ class MainWindow(QMainWindow, Database):
         self.add_btn.clicked.connect(self.add_new_task)
 
     def on_search_btn_clicked(self):
-        self.ui.stackedWidget.setCurrentIndex(5)
+        # self.ui.stackedWidget.setCurrentIndex(5)
+        self.get_tasks_by_title(self.search_input.text())
 
     def on_user_btn_clicked(self):
         self.ui.stackedWidget.setCurrentIndex(6)
@@ -193,8 +196,7 @@ class MainWindow(QMainWindow, Database):
         if popup.exec():
             self.selected_end_date_time = popup.get_selected_date_time()
             print(
-                f"Selected date and time: {self.selected_end_date_time.toString('dd.MM.yyyy HH:mm')}"
-            )
+                f"Selected date and time: {self.selected_end_date_time.toString('dd.MM.yyyy HH:mm')}")
 
     def update_current_date(self):
         today = datetime.date.today()
@@ -203,21 +205,33 @@ class MainWindow(QMainWindow, Database):
         self.ui.label_current_day_3.setText(today.strftime("%d %B, %A"))
 
     def on_only_today_btn_clicked(self):
-        self.sort_tasks_by_date()
-
-    def sort_tasks_by_date(self):
-        today = datetime.date.today().strftime("%d %B")
-        today_tasks = [task for task in self.task_list if task[2] == today]
-        other_tasks = [task for task in self.task_list if task[2] != today]
-        self.task_list = today_tasks + other_tasks
-        self.show_tasks(self.task_list)
+        print("Button clicked!")
+        self.get_tasks_for_today()
 
     def on_btn_more_clicked(self):
-        self.sort_tasks_by_date_left()
+        self.sort_tasks_by_deadline()
 
-    def sort_tasks_by_date_left(self):
-        sorted_tasks = sorted(
-            self.task_list,
-            key=lambda task: datetime.datetime.strptime(task[2], "%d %B"),
-        )
-        self.show_tasks(sorted_tasks)
+    def get_tasks_with_deadlines(self):
+        """
+        Получить задачи с датами окончания из базы данных.
+        """
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        cursor.execute("SELECT task, end_date_time FROM tasks WHERE end_date_time IS NOT NULL")
+        tasks = cursor.fetchall()
+        conn.close()
+        return tasks
+
+    def highlight_tasks_in_calendar(self):
+        tasks = self.get_tasks_with_deadlines()
+        calendar = self.ui.calendarWidget
+
+        for task in tasks:
+            end_time_str = task[1]
+            end_time = QDateTime.fromString(end_time_str, "dd.MM.yyyy HH:mm")
+            if end_time.isValid():
+                format = QTextCharFormat()
+                format.setForeground(QtGui.QColor("orange"))
+                calendar.setDateTextFormat(end_time.date(), format)
+
+        calendar.update()
